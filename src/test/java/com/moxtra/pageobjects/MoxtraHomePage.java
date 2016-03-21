@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -56,5 +56,31 @@ public class MoxtraHomePage {
         yesButton.click();
 
         return PageFactory.initElements(driver, SignInPage.class);
+    }
+
+    public void clickConversation(WebDriver driver) {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@title='For testing']")));
+        WebElement conversation = driver.findElement(By.xpath("//span[@title='For testing']"));
+        conversation.click();
+    }
+
+    public void sendMsg(WebDriver driver, String message) {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='postComment']")));
+        WebElement msgTextBox = driver.findElement(By.xpath("//textarea[@name='postComment']"));
+        msgTextBox.clear();
+        String expectMsg = message;
+        msgTextBox.sendKeys(expectMsg + "\n");
+    }
+
+    public void verifyMessage(WebDriver driver, String expectedMsg) {
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//div[@class='mx-message'])[last()]//span")));
+        //There is a message box contains all message in this chatting room
+        //so we need to find the last message element, which we just sent, using last() method of xpath
+        WebElement actualMsg = driver.findElement(By.xpath("(//div[@class='mx-message'])[last()]//span"));
+        //check if the message we passed is equal to the message displayed in the message box.
+        assertEquals("Validation FAILED : THE MESSAGE DISPLAYED NOT EQUAL TO THE MESSAGE WE SENT.", expectedMsg, actualMsg.getText());
     }
 }
