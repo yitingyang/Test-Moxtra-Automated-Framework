@@ -5,9 +5,6 @@ import org.junit.After;
 import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import static org.junit.Assert.assertEquals;
 
 
 import static org.junit.Assert.assertTrue;
@@ -74,9 +71,9 @@ public class MoxtraSignInTest {
         //Step8. Verify if the message displayed as we sent
         moxtraHomePage.verifyMessage(driver, expectedMsg);
     }
-     @After
-     //Close the browser after each test case runs
-     public void tearDown(){
-         driver.close();
-     }
+    @After
+    //Close the browser after each test case runs
+    public void tearDown(){
+        driver.close();
+    }
 }
