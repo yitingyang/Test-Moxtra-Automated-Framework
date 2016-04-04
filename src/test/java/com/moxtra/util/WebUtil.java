@@ -13,7 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  * Created by Angie_Yang on 3/16/2016.
  */
 public class WebUtil {
-    private static final long WAIT_TIME_OUT_IN_SECOND = 20;
+    private static final long WAIT_TIME_OUT_IN_SECOND = 100;
 
     public static SignInPage goToSignInPage(WebDriver driver) {
         driver.get("https://www.moxtra.com/service/#login");     //use the driver to go to moxtra

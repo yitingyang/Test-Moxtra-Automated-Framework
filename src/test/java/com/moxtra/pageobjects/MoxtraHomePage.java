@@ -61,12 +61,12 @@ public class MoxtraHomePage {
         assertEquals("Validation FAILED : THE MESSAGE DISPLAYED NOT EQUAL TO THE MESSAGE WE SENT.", expectedMsg, actualMsg.getText());
     }
 
-    public void verifyUploadedFile(WebDriver driver, String expectedFile) {
-        WebUtil.waitForElementToBeVisible(driver, By.xpath("(//div[@class='mx-message'])[last()]"));
+    public void verifyUploadedFile(WebDriver driver, String expectedUploadFile) {
+        WebUtil.waitForElementToBeVisible(driver, By.xpath("(//div[@class='mx-message'])[last()][contains(text(),'" + expectedUploadFile + "')]"));
         //There is a message box contains all message in this chatting room
         //so we need to find the last message element, which we just sent, using last() method of xpath
-        WebElement actualFile = driver.findElement(By.xpath("(//div[@class='mx-message'])[last()]"));
+        WebElement actualFile = driver.findElement(By.xpath("(//div[@class='mx-message'])[last()][contains(text(),'" + expectedUploadFile + "')]"));
         //check if the uploaded message contains the name of the file we uploaded
-        assertTrue("Validation FAILED : THE MESSAGE DISPLAYED NOT EQUAL TO THE MESSAGE WE SENT.", actualFile.getText().contains(expectedFile));
+        assertTrue("Validation FAILED : THE NAME OF THE FILE WAS NOT CONTAINED IN THE MESSAGE.", actualFile.getText().contains(expectedUploadFile));
     }
 }
