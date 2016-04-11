@@ -29,4 +29,10 @@ public class SignInPage {
         WebUtil.waitForElementToBeVisible(driver, By.linkText("Timeline"));
         return PageFactory.initElements(driver, MoxtraHomePage.class);
     }
+
+    public static MoxtraCalendarPage clickCalendar(WebDriver driver) {
+        WebUtil.click(driver, By.linkText("Calendar"));
+        WebUtil.waitForElementToBeVisible(driver, By.linkText("Schedule Meet"));
+        return PageFactory.initElements(driver, MoxtraCalendarPage.class);
+    }
 }

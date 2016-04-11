@@ -1,13 +1,16 @@
 import com.moxtra.categories.Critical;
 import com.moxtra.categories.Major;
+import com.moxtra.pageobjects.MoxtraCalendarPage;
 import com.moxtra.pageobjects.MoxtraHomePage;
 import com.moxtra.pageobjects.SignInPage;
 import com.moxtra.util.WebUtil;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 
 
 import java.io.IOException;
@@ -20,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 public class MoxtraSignInTest {
 
     WebDriver driver = new FirefoxDriver();   //create a webdriver
+
     @Category({Critical.class})
     @Test
     public void moxtraSignInShoudBeSucessful() {
@@ -164,10 +168,89 @@ public class MoxtraSignInTest {
         //Step12. Verify if it did delete
         WebUtil.doesElementDisplayed(driver, By.xpath("(//div[@class='mx-message'])[last()][contains(text(), 'Moxtra Test deleted a file') and contains(text(),'" + file + "')]"));
     }
+    @Test
+    public void createToDoListWithNoDetailed(){
+        final String expectedToDoTitle = "Test to-do list";
+        //Step1. Go to moxtra website (http://www.moxtra.com)
+        SignInPage signInPage = WebUtil.goToSignInPage(driver);
 
+        //Step2. Verify the Sign In Page
+        assertTrue("Validation FAILED : TEXT \"Account Sign In\" NOT FOUND", signInPage.doesSignInPageDisplayed(driver));  // if the element is not displayed, throws an AssertionError with the given msg.
+
+        //Step3. Enter email and  password
+        SignInPage.enterEmail(driver, "testmoxtraframework@gmail.com");
+        SignInPage.enterPassword(driver, "thisisfortesting");
+
+        //Step4. Sign in
+        MoxtraHomePage moxtraHomePage = SignInPage.clickSignIn(driver);
+
+        //Step5. Verify user did sign in
+        assertTrue("Validation FAILED : TEXT \"Timeline\" NOT FOUND", moxtraHomePage.doesTimeLineDisplayed(driver));
+
+        //Step6. Click conversation
+        moxtraHomePage.clickConversation(driver);
+
+        //Step7. Click To-Do
+        WebUtil.click(driver, By.linkText("To-Do"));
+
+        //Step8. Create to-do List
+        WebUtil.clearAndSendMsg(driver, By.id("todoInput"), expectedToDoTitle);
+
+        //Step9. Verify to-do list did create
+        WebUtil.doesElementDisplayed(driver, By.xpath("//div[@class='ellipsis todo-name' and text()='" + expectedToDoTitle + "']"));
+    }
+/*
+    @Test
+    public void scheduleMeetShouldBeSuccessful(){
+        final String expectedTopic = "this is for testing\t";
+        final String scheduleYear = "2016";
+        final String scheduleMonth = "April";
+        final String scheduleDay = "15";
+        //Step1. Go to moxtra website (http://www.moxtra.com)
+        SignInPage signInPage = WebUtil.goToSignInPage(driver);
+
+        //Step2. Verify the Sign In Page
+        assertTrue("Validation FAILED : TEXT \"Account Sign In\" NOT FOUND", signInPage.doesSignInPageDisplayed(driver));  // if the element is not displayed, throws an AssertionError with the given msg.
+
+        //Step3. Enter email and  password
+        SignInPage.enterEmail(driver, "testmoxtraframework@gmail.com");
+        SignInPage.enterPassword(driver, "thisisfortesting");
+
+        //Step4. Sign in
+        MoxtraHomePage moxtraHomePage = SignInPage.clickSignIn(driver);
+
+        //Step5. Verify user did sign in
+        assertTrue("Validation FAILED : TEXT \"Timeline\" NOT FOUND", moxtraHomePage.doesTimeLineDisplayed(driver));
+
+        MoxtraCalendarPage moxtraCalendarPage = SignInPage.clickCalendar(driver);
+        WebUtil.click(driver, By.linkText("Schedule Meet"));
+        WebUtil.clearAndFillKeys(driver, By.id("scheduleTopic"), expectedTopic);
+        WebElement year = driver.findElement(By.xpath("//div[@class = 'xdsoft_label xdsoft_year']/span"));
+        int yearDiff = Math.abs(Integer.parseInt(year.getText()) - Integer.parseInt(scheduleYear)) * 12;
+        Actions actions = new Actions(driver);
+        for(int i = 0; i < yearDiff; i++){
+            actions.moveToElement(driver.findElement(By.xpath("//div[@class = 'xdsoft_mounthpicker']/button[@class='xdsoft_next']"))).click();
+
+        }
+        WebElement month = driver.findElement(By.xpath("//div[@class = 'xdsoft_label xdsoft_month']/span"));
+
+        int monthDiff = WebUtil.monthStringToInt(month.getText())- WebUtil.monthStringToInt(scheduleMonth);
+        if(monthDiff > 0){
+            for(int i = 0; i < monthDiff; i++){
+                WebUtil.executorButtonClick(driver, By.xpath("//button[@class='xdsoft_next']"));
+            }
+        }
+        else{
+            for(int i = 0; i < Math.abs(monthDiff); i++){
+                WebUtil.executorButtonClick(driver, By.xpath("//button[@class='xdsoft_prev']"));
+            }
+        }
+
+    }*/
+    /*
     @After
     //Close the browser after each test case runs
     public void tearDown() {
         driver.close();
-    }
+    }*/
 }

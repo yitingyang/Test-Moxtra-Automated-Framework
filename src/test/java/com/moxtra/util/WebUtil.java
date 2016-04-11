@@ -37,6 +37,7 @@ public class WebUtil {
 
     public static void executorButtonClick(WebDriver driver, By by) {
         WebElement logoutButton = driver.findElement(by);    //find log out button by its link Text
+        waitForElementToBeVisible(driver, by);
         JavascriptExecutor executor = (JavascriptExecutor)driver;
         executor.executeScript("arguments[0].click();", logoutButton);
     }
@@ -50,6 +51,7 @@ public class WebUtil {
 
     public static void clearAndSendMsg(WebDriver driver, By by, String message) {
         WebElement msgTextBox = driver.findElement(by);
+        waitForElementToBeVisible(driver,by);
         msgTextBox.clear();
         String expectMsg = message;
         msgTextBox.sendKeys(expectMsg + "\n");
@@ -57,7 +59,35 @@ public class WebUtil {
 
     public static void clearAndFillKeys(WebDriver driver, By by, String string) {
         WebElement TextBox = driver.findElement(by);     //locate the textbox by its locator
+        waitForElementToBeVisible(driver,by);
         TextBox.clear();      //clear the text box before sending keys
         TextBox.sendKeys(string);   //send the key to the TextBox, the string passed should appear in the text box
+    }
+
+    public static int monthStringToInt(String text) {
+        if(text.equals("January"))
+            return 1;
+        else if(text.equals("February"))
+            return 2;
+        else if(text.equals("March"))
+            return 3;
+        else if(text.equals("April"))
+            return 4;
+        else if(text.equals("May"))
+            return 5;
+        else if(text.equals("June"))
+            return 6;
+        else if(text.equals("July"))
+            return 7;
+        else if(text.equals("August"))
+            return 8;
+        else if(text.equals("September"))
+            return 9;
+        else if(text.equals("October"))
+            return 10;
+        else if(text.equals("November"))
+            return 11;
+        else
+            return 12;
     }
 }
